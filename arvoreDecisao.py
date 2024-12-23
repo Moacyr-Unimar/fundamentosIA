@@ -1,25 +1,29 @@
-import pandas as pd, numpy as np
+import pandas as pd
+import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn import preprocessing
 
-def loadDataset(pathDataset):
-    datasetCSV = pd.read_csv(pathDataset)
-    data = np.array(datasetCSV)
-    return data[:,:-1].astype(np.float64), data[:,-1], datasetCSV.columns
+
+def load_dataset(path_dataset):
+    dataset_csv = pd.read_csv(path_dataset)
+    data = np.array(dataset_csv)
+    return data[:, :-1].astype(np.float64), data[:, -1], dataset_csv.columns
+
 
 def main():
-    data, classes, cols = loadDataset('datasets/iris.csv')
+    data, classes, _ = load_dataset('datasets/iris.csv')
     le = preprocessing.LabelEncoder()
     yvs = le.fit_transform(classes)
 
-    X_train, X_test, y_train, y_test = train_test_split(data, yvs, random_state=0)
+    x_train, x_test, y_train, y_test = train_test_split(data, yvs, random_state=0)
 
-    deClass = DecisionTreeClassifier(criterion='entropy')
-    deClass.fit(X_train,y_train)
-    guessed = deClass.predict(X_test)
+    de_class = DecisionTreeClassifier(criterion='entropy')
+    de_class.fit(x_train, y_train)
+    guessed = de_class.predict(x_test)
     print(classification_report(y_test, guessed))
-    
+
+
 if __name__ == '__main__':
     main()
